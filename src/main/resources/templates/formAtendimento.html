@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Cadastro de Atendimento</h1>
+	<h1>Cadastro de Atendimento</h1>
 
-<form method="POST" action="">
+	<form method="POST" action="">
 
-
-
-</form>
+		<tr>
+			<td><form:label path="pessoa_nome">Nome do responsável</form:label></td>
+			<td><form:input path="pessoa_nome" /></td>
+		</tr>
+		<tr>
+			<td><form:label path="animal_nome">Nome animal</form:label></td>
+			<td><form:input path="animal_nome" /></td>
+		</tr>
+		<tr>
+			<td><form:label path="animal_raca">Raça do animal</form:label></td>
+			<td><form:input path="animal_raca" /></td>
+		</tr>
+		<tr>
+			<td><form:label path="tipoAtendimento">Tipo de Atendimento</form:label></td>
+			<td><form:input path="tipoAtendimento" /></td>
+		</tr>
+		
+		<tr>
+			<td><input type="submit" value="Cadastrar"></td>
+	</form>
 </body>
 </html>
