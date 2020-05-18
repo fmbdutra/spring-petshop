@@ -1,11 +1,46 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Atendimentos</title>
 </head>
 <body>
-Listou
+	<h1>Atendimentos</h1>
+
+	<p th:if="${listaAtendimento.empty or listaAtendimento==null}">Nao
+		ha atendimento para listar</p>
+	<table border='1'
+		th:unless="${listaAtendimento.empty and listaAtendimento!=null}">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nome</th>
+				<th>Animal</th>
+				<th>Dono</th>
+				<th>Atendimento</th>
+				<th>Data Entrega</th>
+				<th>Entregue</th>
+			</tr>
+		</thead>
+		<tbody>
+			</tr>
+			<tr th:each="atendimento : ${listaAtendimento}">
+				<td><span th:text="${atendimento.id}"> </span></td>
+				<td><span th:text="${atendimento.animal_nome}"> </span></td>
+				<td><span th:text="${atendimento.animal_raca}"> </span></td>
+				<td><span th:text="${atendimento.pessoa_nome}"> </span></td>
+				<td><span th:text="${atendimento.tipoAtendimento}"> </span></td>
+				<td><span th:text="${atendimento.dataEntrega}"> </span></td>
+				<td><span th:text="${atendimento.entregaStatus}"> </span></td>
+				<td>
+					<form method="delete" th:action="@{/atendimentos/deleta}" >
+						<input type="hidden" name="id" th:value="${atendimento.id}" /> 
+						<input type="submit" value="Deletar" class="btn btn-danger" />
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </body>
 </html>

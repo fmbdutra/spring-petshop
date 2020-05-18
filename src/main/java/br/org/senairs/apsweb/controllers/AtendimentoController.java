@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.org.senairs.apsweb.entidades.Atendimento;
@@ -18,6 +19,8 @@ import br.org.senairs.apsweb.services.AtendimentoService;
 @Controller
 @RequestMapping("/atendimentos")
 public class AtendimentoController {
+	
+	AtendimentoService atendimentoService = AtendimentoService.getInstance();
 
 	@GetMapping({ "/cadastro" })
 	public ModelAndView cadastro(Model model) {
@@ -35,12 +38,7 @@ public class AtendimentoController {
 	@RequestMapping(value = "/adicionarAtendimento", method = RequestMethod.POST)
 	public String adicionarAtendimento(Atendimento atendimento, HttpSession session, Model model) {
 
-		atendimento.setEntregaStatus("N");
-
-		LocalDateTime data = LocalDateTime.now();
-		atendimento.setDataEntrega(data.plusHours(5).toString());
-
-		AtendimentoService.cadastrar(atendimento);
+		atendimentoService.cadastrar(atendimento);
 
 		return "cadastrado";
 	}
@@ -63,17 +61,32 @@ public class AtendimentoController {
 
 		a.setDataEntrega(agoraFormatado);
 
-		AtendimentoService.cadastrar(a);
+		atendimentoService.cadastrar(a);
 
 		return "cadastrado";
 	}
 
-	@GetMapping("/listar")
-	public String listaAtendimento() {
-
-		AtendimentoService.listar();
-
+	@GetMapping({"/listar", "", "/"})
+	public String listaAtendimento(Model model) {		
+		
+		model.addAttribute("listaAtendimento", atendimentoService.listar());
+		
 		return "listarAtendimentos";
+	}
+	
+	@RequestMapping(value = "/deleta", method = RequestMethod.GET)
+	public String deletaAtendimento(@RequestParam(value="id") String id){
+		String model = "";
+		System.out.println("Entrou");
+		boolean deletou = atendimentoService.deletar(id);
+		
+		if(deletou) {
+			model = "deletouAtendimento";
+		}else {
+			model = "error";
+		}
+		
+		return model;
 	}
 
 }
