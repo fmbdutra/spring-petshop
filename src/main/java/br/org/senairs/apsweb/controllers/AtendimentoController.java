@@ -1,6 +1,7 @@
 package br.org.senairs.apsweb.controllers;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,10 +34,11 @@ public class AtendimentoController {
 
 	@RequestMapping(value = "/adicionarAtendimento", method = RequestMethod.POST)
 	public String adicionarAtendimento(Atendimento atendimento, HttpSession session, Model model) {
-		
-//		atendimento.setId(0);
+
 		atendimento.setEntregaStatus("N");
-		atendimento.setDataEntrega("02-02-2020");
+
+		LocalDateTime data = LocalDateTime.now();
+		atendimento.setDataEntrega(data.plusHours(5).toString());
 
 		AtendimentoService.cadastrar(atendimento);
 
@@ -46,15 +48,20 @@ public class AtendimentoController {
 	@RequestMapping(value = "/testeAdiciona", method = RequestMethod.POST)
 	public String adicionarAtendimento() {
 		Atendimento a = new Atendimento();
-		LocalDateTime t = LocalDateTime.now();
+		
+		LocalDateTime agora = LocalDateTime.now();
+		agora = agora.plusHours(5);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
+		String agoraFormatado = agora.format(formatter);
+		System.out.println("LocalDateTime formatado: " + agoraFormatado);
+
 		a.setAnimal_nome("teste");
 		a.setAnimal_raca("cachorro");
-		a.setDataEntrega(t.toString());
 		a.setEntregaStatus("N");
 		a.setPessoa_nome("senhor teste");
 		a.setTipoAtendimento("banho");
 
-		a.setId(0);
+		a.setDataEntrega(agoraFormatado);
 
 		AtendimentoService.cadastrar(a);
 
