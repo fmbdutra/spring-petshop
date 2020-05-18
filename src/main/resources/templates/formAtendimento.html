@@ -1,34 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
 <body>
 	<h1>Cadastro de Atendimento</h1>
+	<table>
+		<form method="POST" th:action="@{/atendimentos/adicionarAtendimento}"
+			th:object="${atendimento}">
 
-	<form method="POST" action="">
+			<tr>
+				<td>Nome do responsavel</td>
+				<td><input type="text" th:field="*{pessoa_nome}" /></td>
+			</tr>
+			<tr>
+				<td>Nome</td>
+				<td><input type="text" th:field="*{animal_nome}" /></td>
+			</tr>
+			<tr>
+				<td>Animal</td>
+				<td><select th:field="*{animal_raca}">
+						<option value=""  th:selected="true">Selecione</option>
+						<option th:each="animalRaca : ${animalRaca}"
+							th:value="${animalRaca}" th:utext="${animalRaca}" />
+				</select></td>
+			</tr>
+ 			<tr>
+				<td>Tipo de Atendimento</td>
+				<td><select th:field="*{tipoAtendimento}">
+					<option value="" th:selected="true" disabled>Selecione</option>
+					<option th:each="tipoAtendimento : ${tipoAtendimento}"
+						th:value="${tipoAtendimento}" th:utext="${tipoAtendimento}" />
+				</select>
+				</td>
+			</tr> 
+			<tr>
+				<td><input type="submit" value="Cadastrar"></td>
+			</tr>
 
-		<tr>
-			<td><form:label path="pessoa_nome">Nome do responsável</form:label></td>
-			<td><form:input path="pessoa_nome" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="animal_nome">Nome animal</form:label></td>
-			<td><form:input path="animal_nome" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="animal_raca">Raça do animal</form:label></td>
-			<td><form:input path="animal_raca" /></td>
-		</tr>
-		<tr>
-			<td><form:label path="tipoAtendimento">Tipo de Atendimento</form:label></td>
-			<td><form:input path="tipoAtendimento" /></td>
-		</tr>
-		
-		<tr>
-			<td><input type="submit" value="Cadastrar"></td>
-	</form>
+		</form>
+	</table>
 </body>
 </html>

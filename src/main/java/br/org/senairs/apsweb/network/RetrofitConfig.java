@@ -1,4 +1,4 @@
-package br.org.senairs.apsweb.services;
+package br.org.senairs.apsweb.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

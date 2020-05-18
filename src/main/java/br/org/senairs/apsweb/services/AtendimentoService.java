@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.org.senairs.apsweb.entidades.Atendimento;
+import br.org.senairs.apsweb.network.RetrofitConfig;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AtendimentoServiceClient {
-	public static void chamada() {
+public class AtendimentoService {
+	public static void listar() {
 
 		System.out.println("oi");
 
@@ -23,7 +24,7 @@ public class AtendimentoServiceClient {
 					for (Atendimento s : response.body()) {
 						listaAtendimentos.add(s);
 					}
-					
+
 					System.out.println(listaAtendimentos.size());
 				}
 			}
@@ -35,4 +36,26 @@ public class AtendimentoServiceClient {
 			}
 		});
 	}
+
+	public static void cadastrar(Atendimento atendimento) {
+		
+		Call<Atendimento> call = new RetrofitConfig().getAtendimentoAPIService().cadastrarAtendimento(atendimento);
+		call.enqueue(new Callback<Atendimento>() {
+			@Override
+			public void onResponse(Call<Atendimento> call, Response<Atendimento> response) {
+
+			}
+
+			@Override
+			public void onFailure(Call<Atendimento> call, Throwable t) {
+				System.out.println("Erro ao fazer requisicao! Erro:" + t.getMessage());
+			}			
+		});
+		
+
+		
+	}
+	
+	
+	
 }

@@ -26,16 +26,19 @@ public class AtendimentoResource {
 	
 	@GetMapping("/atendimentos")
 	public List<Atendimento> listaAtendimentos(){
+		System.out.println("Chamou atendimentos");
 		return atendimentoRepository.findAll();
 	}	
 	
 	@GetMapping("/atendimentos/{id}")
 	public Atendimento listaAtendimentoUnico(@PathVariable(value="id") long id){
+		System.out.println("Busca por id "+id);
 		return atendimentoRepository.findById(id);
 	}
 	
 	@PostMapping("/atendimentos")
 	public Atendimento salvaAtendimento(@RequestBody @Valid Atendimento atendimento) {
+		System.out.println("salvando atendimento");
 		return atendimentoRepository.save(atendimento);
 	}
 	
