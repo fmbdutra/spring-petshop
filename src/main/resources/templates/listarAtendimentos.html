@@ -8,6 +8,11 @@
 <body>
 	<h1>Atendimentos</h1>
 
+	<input type="button" class="btn btn-dark" value="Pagina Inicial"
+		onclick="location.href='/';">
+	<br>
+	<br>
+
 	<p th:if="${listaAtendimento.empty or listaAtendimento==null}">Nao
 		ha atendimento para listar</p>
 	<table border='1'
@@ -20,7 +25,7 @@
 				<th>Dono</th>
 				<th>Atendimento</th>
 				<th>Data Entrega</th>
-				<th>Entregue</th>
+				<th>Acao</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -32,11 +37,10 @@
 				<td><span th:text="${atendimento.pessoa_nome}"> </span></td>
 				<td><span th:text="${atendimento.tipoAtendimento}"> </span></td>
 				<td><span th:text="${atendimento.dataEntrega}"> </span></td>
-				<td><span th:text="${atendimento.entregaStatus}"> </span></td>
 				<td>
-					<form method="delete" th:action="@{/atendimentos/deleta}" >
-						<input type="hidden" name="id" th:value="${atendimento.id}" /> 
-						<input type="submit" value="Deletar" class="btn btn-danger" />
+					<form method="get" th:action="@{/atendimentos/deleta}">
+						<input type="hidden" name="id" th:value="${atendimento.id}" /> <input
+							type="submit" value="Deletar" class="btn btn-danger" />
 					</form>
 				</td>
 			</tr>

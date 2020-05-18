@@ -38,7 +38,9 @@ public class AtendimentoController {
 	@RequestMapping(value = "/adicionarAtendimento", method = RequestMethod.POST)
 	public String adicionarAtendimento(Atendimento atendimento, HttpSession session, Model model) {
 
-		atendimentoService.cadastrar(atendimento);
+		Atendimento novoAtendimento = atendimentoService.cadastrar(atendimento);
+		
+		model.addAttribute("data_entraga", novoAtendimento.getDataEntrega());
 
 		return "cadastrado";
 	}
@@ -49,7 +51,7 @@ public class AtendimentoController {
 		
 		LocalDateTime agora = LocalDateTime.now();
 		agora = agora.plusHours(5);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		String agoraFormatado = agora.format(formatter);
 		System.out.println("LocalDateTime formatado: " + agoraFormatado);
 
@@ -77,10 +79,9 @@ public class AtendimentoController {
 	@RequestMapping(value = "/deleta", method = RequestMethod.GET)
 	public String deletaAtendimento(@RequestParam(value="id") String id){
 		String model = "";
-		System.out.println("Entrou");
-		boolean deletou = atendimentoService.deletar(id);
+		String deletou = atendimentoService.deletar(id);
 		
-		if(deletou) {
+		if("deletou".equalsIgnoreCase(deletou)) {
 			model = "deletouAtendimento";
 		}else {
 			model = "error";

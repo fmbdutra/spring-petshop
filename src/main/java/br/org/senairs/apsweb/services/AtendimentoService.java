@@ -2,15 +2,10 @@ package br.org.senairs.apsweb.services;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import br.org.senairs.apsweb.entidades.Atendimento;
-import br.org.senairs.apsweb.network.RetrofitConfig;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import br.org.senairs.apsweb.network.AtendimentoRetrofit;
 
 public class AtendimentoService {
 
@@ -24,28 +19,32 @@ public class AtendimentoService {
 			atendimentoService = new AtendimentoService();
 		return atendimentoService;
 	}
+	
+	AtendimentoRetrofit atendimentoRetrofit = AtendimentoRetrofit.getInstance();
 
 	public List<Atendimento> listar() {
+		
+		return atendimentoRetrofit.listar();
 
-		final List<Atendimento> listaAtendimentos = new ArrayList<Atendimento>();
-
-		Call<List<Atendimento>> call = new RetrofitConfig().getAtendimentoAPIService().getAtendimento();
-		try {
-			Response<List<Atendimento>> response = call.execute();
-			for (Atendimento atendimento : response.body()) {
-				listaAtendimentos.add(atendimento);
-			}
-			System.out.println("retrofit lista: " + listaAtendimentos.size());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		System.out.println("fora retrofit lista: " + listaAtendimentos.size());
-
-		return listaAtendimentos;
+//		final List<Atendimento> listaAtendimentos = new ArrayList<Atendimento>();
+//
+//		Call<List<Atendimento>> call = new RetrofitConfig().getAtendimentoAPIService().getAtendimento();
+//		try {
+//			Response<List<Atendimento>> response = call.execute();
+//			for (Atendimento atendimento : response.body()) {
+//				listaAtendimentos.add(atendimento);
+//			}
+//			System.out.println("retrofit lista: " + listaAtendimentos.size());
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//
+//		System.out.println("fora retrofit lista: " + listaAtendimentos.size());
+//
+//		return listaAtendimentos;
 	}
 
-	public void cadastrar(Atendimento atendimento) {
+	public Atendimento cadastrar(Atendimento atendimento) {
 
 		atendimento.setEntregaStatus("N");
 
@@ -57,40 +56,55 @@ public class AtendimentoService {
 		} else {
 			atendimento.setDataEntrega("Aguardar chamada");
 		}
+		
+		atendimentoRetrofit.cadastrar(atendimento);
+		
+		return atendimento;
 
-		Call<Atendimento> call = new RetrofitConfig().getAtendimentoAPIService().cadastrarAtendimento(atendimento);
-		call.enqueue(new Callback<Atendimento>() {
-			@Override
-			public void onResponse(Call<Atendimento> call, Response<Atendimento> response) {
-
-			}
-
-			@Override
-			public void onFailure(Call<Atendimento> call, Throwable t) {
-				System.out.println("Erro ao fazer requisicao! Erro:" + t.getMessage());
-			}
-		});
+//		Call<Atendimento> call = new RetrofitConfig().getAtendimentoAPIService().cadastrarAtendimento(atendimento);
+//		call.enqueue(new Callback<Atendimento>() {
+//			@Override
+//			public void onResponse(Call<Atendimento> call, Response<Atendimento> response) {
+//
+//			}
+//
+//			@Override
+//			public void onFailure(Call<Atendimento> call, Throwable t) {
+//				System.out.println("Erro ao fazer requisicao! Erro:" + t.getMessage());
+//			}
+//		});
 
 	}
 
-	public boolean deletar(String id) {
-		String deletar = "";
+	public String deletar(String id) {
+//		String deletar = "";
+//		
+//		Call<ResponseBody> call = new RetrofitConfig().getAtendimentoAPIService().deleteAtendimento(Long.parseLong(id));
+//		try {
+//			Response<ResponseBody> response = call.execute();
+//			deletar = response.body().string();		
+//			System.out.println("api retornou: "+deletar);
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//		}
+//		
+//		if (!"ok".equalsIgnoreCase(deletar)){
+//			System.out.println("Deu ruim, nao deletou");
+//			return false;
+//		}
+//		
+//		return true;	
 		
-		Call<ResponseBody> call = new RetrofitConfig().getAtendimentoAPIService().deleteAtendimento(Long.parseLong(id));
-		try {
-			Response<ResponseBody> response = call.execute();
-			deletar = response.body().string();		
-			System.out.println("api retornou: "+deletar);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		String retorno = "";
+		boolean retornoResponse = atendimentoRetrofit.deletar(id);
+		
+		if(retornoResponse) {
+			retorno = "deletou";
+		}else {
+			retorno = "nao deletou";
 		}
 		
-		if (!"ok".equalsIgnoreCase(deletar)){
-			System.out.println("Deu ruim");
-			return false;
-		}
-		
-		return true;
+		return retorno;
 	}	
 	
 
