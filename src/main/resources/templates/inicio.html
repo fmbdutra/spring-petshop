@@ -2,25 +2,40 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>TRABALHO PETSHOP</title>
 </head>
 <body>
-	<h1>TRABALHO PETSHOP</h1>
+	<h1>TRABALHO PETSHOP - Amanda/Fabiano</h1>
 
 	<p>Deve ser setado no "src/main/resources/aplication.proprieties" o
-		banco de dados POSTGRES</p>
+		banco de dados POSTGRES com a database /petshop</p>
 	<p>Feito a partir de uma API e requisicoes a ela. Rodando no mesmo
 		projeto</p>
-	<p>Os pacotes API sao da respectiva, que conecta ao banco, e o
+	<p>O pacote "api"" sao da respectiva, que conecta ao banco, e o
 		pacote "network" eh o que faz as requicoes por Retrofit</p>
+	<p>Caso queira usar docker, conforme usado, comandos abaixo e
+		coloca no aplication.proprieties o banco como
+		"localhost:5432/petshop":</p>
+	<p>$ docker run --name postgres-container -p 5432:5432 -v
+		/tmp/database:/var/lib/postgresql/data -e POSTGRES_PASSWORD=12345 -e
+		POSTGRES_DB=petshop -d postgres</p>
+	<p>$ docker run -p 5555:80 --name pgadmin-container -e
+		PGADMIN_DEFAULT_EMAIL="usuario" -e PGADMIN_DEFAULT_PASSWORD="12345"
+		dpage/pgadmin4</p>
 	<br>
 	<br>
-
 	<input type="button" class="btn btn-dark"
-		value="Cadastro de Atendimentos" onclick="location.href='/atendimentos/cadastro';">
-	<br><br>
+		value="Cadastro de Atendimentos"
+		onclick="location.href='/atendimentos/cadastro';">
+	<br>
+	<br>
 	<input type="button" class="btn btn-dark" value="Lista de Atendimentos"
 		onclick="location.href='/atendimentos/';">
-
+	<br>
+	<br>
+	<br>
+	<input type="button" class="btn btn-dark"
+		value="Preencher lista para teste"
+		onclick="location.href='/atendimentos/testeAdiciona';">
 </body>
 </html>

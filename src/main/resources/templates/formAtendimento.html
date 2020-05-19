@@ -4,7 +4,7 @@
 
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Cadastro de Atendimentos PETSHOP</title>
 </head>
 <body>
 	<h1>Cadastro de Atendimento</h1>
@@ -17,31 +17,33 @@
 				<td><input type="text" th:field="*{pessoa_nome}" /></td>
 			</tr>
 			<tr>
-				<td>Nome</td>
+				<td>Nome Animal</td>
 				<td><input type="text" th:field="*{animal_nome}" /></td>
 			</tr>
 			<tr>
-				<td>Animal</td>
+				<td>Raca Animal</td>
 				<td><select th:field="*{animal_raca}">
-						<option value=""  th:selected="true">Selecione</option>
 						<option th:each="animalRaca : ${animalRaca}"
 							th:value="${animalRaca}" th:utext="${animalRaca}" />
 				</select></td>
 			</tr>
- 			<tr>
+			<tr>
 				<td>Tipo de Atendimento</td>
 				<td><select th:field="*{tipoAtendimento}">
-					<option value="" th:selected="true" disabled>Selecione</option>
-					<option th:each="tipoAtendimento : ${tipoAtendimento}"
-						th:value="${tipoAtendimento}" th:utext="${tipoAtendimento}" />
-				</select>
-				</td>
-			</tr> 
-			<tr>
-				<td><input type="submit" value="Cadastrar"></td>
+						<option th:each="tipoAtendimento : ${tipoAtendimento}"
+							th:value="${tipoAtendimento}" th:utext="${tipoAtendimento}" />
+				</select></td>
 			</tr>
+			</table>
+			<br>
+			<input type="submit" value="Cadastrar"> 
 
-		</form>
-	</table>
+
+		</form> <input type="button" class="btn btn-dark" value="Pagina Inicial"
+		onclick="location.href='/';">
+	
+	<br>
+	<br>
+	
 </body>
 </html>

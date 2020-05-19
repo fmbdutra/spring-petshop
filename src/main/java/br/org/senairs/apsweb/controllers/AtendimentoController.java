@@ -1,8 +1,5 @@
 package br.org.senairs.apsweb.controllers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -19,7 +16,7 @@ import br.org.senairs.apsweb.services.AtendimentoService;
 @Controller
 @RequestMapping("/atendimentos")
 public class AtendimentoController {
-	
+
 	AtendimentoService atendimentoService = AtendimentoService.getInstance();
 
 	@GetMapping({ "/cadastro" })
@@ -37,57 +34,62 @@ public class AtendimentoController {
 
 	@RequestMapping(value = "/adicionarAtendimento", method = RequestMethod.POST)
 	public String adicionarAtendimento(Atendimento atendimento, HttpSession session, Model model) {
-
 		Atendimento novoAtendimento = atendimentoService.cadastrar(atendimento);
-		
-		model.addAttribute("data_entraga", novoAtendimento.getDataEntrega());
+		if (novoAtendimento != null) {
+			model.addAttribute("cadastro_status", "Cadastrou!");
+			model.addAttribute("data_entrega", "Data de entrega: " + novoAtendimento.getDataEntrega());
+		} else {
+			model.addAttribute("cadastro_status", "Cadastro invalido!");
+		}
 
 		return "cadastrado";
 	}
 
-	@RequestMapping(value = "/testeAdiciona", method = RequestMethod.POST)
-	public String adicionarAtendimento() {
-		Atendimento a = new Atendimento();
-		
-		LocalDateTime agora = LocalDateTime.now();
-		agora = agora.plusHours(5);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-		String agoraFormatado = agora.format(formatter);
-		System.out.println("LocalDateTime formatado: " + agoraFormatado);
+	@GetMapping({ "/listar", "", "/" })
+	public String listaAtendimento(Model model) {
 
-		a.setAnimal_nome("teste");
-		a.setAnimal_raca("cachorro");
-		a.setEntregaStatus("N");
-		a.setPessoa_nome("senhor teste");
-		a.setTipoAtendimento("banho");
-
-		a.setDataEntrega(agoraFormatado);
-
-		atendimentoService.cadastrar(a);
-
-		return "cadastrado";
-	}
-
-	@GetMapping({"/listar", "", "/"})
-	public String listaAtendimento(Model model) {		
-		
 		model.addAttribute("listaAtendimento", atendimentoService.listar());
-		
+
 		return "listarAtendimentos";
 	}
-	
+
 	@RequestMapping(value = "/deleta", method = RequestMethod.GET)
-	public String deletaAtendimento(@RequestParam(value="id") String id){
+	public String deletaAtendimento(@RequestParam(value = "id") String id) {
 		String model = "";
-		String deletou = atendimentoService.deletar(id);
-		
-		if("deletou".equalsIgnoreCase(deletou)) {
-			model = "deletouAtendimento";
-		}else {
+
+		if (atendimentoService.deletar(id)) {
+			model = "redirect:/atendimentos/listar";
+		} else {
 			model = "error";
 		}
-		
+
 		return model;
+	}
+	
+	@GetMapping(value = "/testeAdiciona")
+	public String adicionarAtendimento() {
+		Atendimento a = new Atendimento();
+		a.setAnimal_nome("teste");
+		a.setAnimal_raca("gato");
+		a.setPessoa_nome("senhor teste");
+		a.setTipoAtendimento("banho");
+		atendimentoService.cadastrar(a);
+		
+		Atendimento b = new Atendimento();
+		b.setAnimal_nome("teste");
+		b.setAnimal_raca("gato");
+		b.setPessoa_nome("senhor teste");
+		b.setTipoAtendimento("tosa");
+		atendimentoService.cadastrar(b);
+		
+		Atendimento c = new Atendimento();
+		c.setAnimal_nome("teste");
+		c.setAnimal_raca("cachorro");
+		c.setPessoa_nome("senhor teste");
+		c.setTipoAtendimento("veterinario");
+		atendimentoService.cadastrar(c);
+
+		return "redirect:/atendimentos/listar";
 	}
 
 }

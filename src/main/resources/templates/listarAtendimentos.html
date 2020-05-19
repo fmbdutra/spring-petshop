@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="ISO-8859-1">
-<title>Atendimentos</title>
+<title>Lista de Atendimentos</title>
 </head>
 <body>
 	<h1>Atendimentos</h1>
@@ -19,17 +19,17 @@
 		th:unless="${listaAtendimento.empty and listaAtendimento!=null}">
 		<thead>
 			<tr>
-				<th>ID</th>
-				<th>Nome</th>
-				<th>Animal</th>
-				<th>Dono</th>
-				<th>Atendimento</th>
-				<th>Data Entrega</th>
+				<th>ID    </th>
+				<th>Nome    </th>
+				<th>Animal    </th>
+				<th>Dono     </th>
+				<th>Atendimento     </th>
+				<th>Estimativa Entrega  </th>
 				<th>Acao</th>
 			</tr>
 		</thead>
 		<tbody>
-			</tr>
+
 			<tr th:each="atendimento : ${listaAtendimento}">
 				<td><span th:text="${atendimento.id}"> </span></td>
 				<td><span th:text="${atendimento.animal_nome}"> </span></td>
@@ -40,7 +40,7 @@
 				<td>
 					<form method="get" th:action="@{/atendimentos/deleta}">
 						<input type="hidden" name="id" th:value="${atendimento.id}" /> <input
-							type="submit" value="Deletar" class="btn btn-danger" />
+							type="submit" value="Remover" class="btn btn-danger" />
 					</form>
 				</td>
 			</tr>

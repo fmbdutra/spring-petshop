@@ -1,3 +1,13 @@
 APS - Des. Gerência de aplicações Web
 
 Nomes: Amanda Paulo De Carli e Fabiano Matheus Bittencourt Dutra.
+
+
+Deve ser setado no "src/main/resources/aplication.proprieties" o banco de dados POSTGRES com a database /petshop
+Feito a partir de uma API e requisicoes a ela. Rodando no mesmo projeto.
+O pacote "api"" sao da respectiva, que conecta ao banco, e o pacote "network" é o que faz as requicoes por Retrofit.
+
+Caso queira usar docker, conforme usado, comandos abaixo e coloca no aplication.proprieties o banco como "localhost:5432/petshop":
+$ docker run --name postgres-container -p 5432:5432 -v /tmp/database:/var/lib/postgresql/data -e POSTGRES_PASSWORD=12345 -e POSTGRES_DB=petshop -d postgres
+$ docker run -p 5555:80 --name pgadmin-container -e PGADMIN_DEFAULT_EMAIL="usuario" -e PGADMIN_DEFAULT_PASSWORD="12345"	dpage/pgadmin4
+	

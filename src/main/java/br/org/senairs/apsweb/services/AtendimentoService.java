@@ -19,100 +19,73 @@ public class AtendimentoService {
 			atendimentoService = new AtendimentoService();
 		return atendimentoService;
 	}
-	
-	AtendimentoRetrofit atendimentoRetrofit = AtendimentoRetrofit.getInstance();
+
+	AtendimentoRetrofit atendimentoConexao = AtendimentoRetrofit.getInstance();
 
 	public List<Atendimento> listar() {
-		
-		return atendimentoRetrofit.listar();
-
-//		final List<Atendimento> listaAtendimentos = new ArrayList<Atendimento>();
-//
-//		Call<List<Atendimento>> call = new RetrofitConfig().getAtendimentoAPIService().getAtendimento();
-//		try {
-//			Response<List<Atendimento>> response = call.execute();
-//			for (Atendimento atendimento : response.body()) {
-//				listaAtendimentos.add(atendimento);
-//			}
-//			System.out.println("retrofit lista: " + listaAtendimentos.size());
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
-//
-//		System.out.println("fora retrofit lista: " + listaAtendimentos.size());
-//
-//		return listaAtendimentos;
+		return atendimentoConexao.listar();
 	}
 
 	public Atendimento cadastrar(Atendimento atendimento) {
+		
+		if(validaCadastroDeAtendimento(atendimento)) {
+			boolean tipoAtendimento = "banho".equalsIgnoreCase(atendimento.getTipoAtendimento())
+					|| "tosa".equalsIgnoreCase(atendimento.getTipoAtendimento());
 
-		atendimento.setEntregaStatus("N");
+			if (tipoAtendimento) {
+				atendimento.setDataEntrega(defineDataParaEntrega());
+			} else {
+				atendimento.setDataEntrega("Aguardar ligacao para buscar");
+			}
 
-		boolean tipoAtendimento = "banho".equalsIgnoreCase(atendimento.getTipoAtendimento())
-				|| "tosa".equalsIgnoreCase(atendimento.getTipoAtendimento());
-
-		if (tipoAtendimento) {
-			atendimento.setDataEntrega(defineDataParaEntrega());
-		} else {
-			atendimento.setDataEntrega("Aguardar chamada");
+			if(!atendimentoConexao.cadastrar(atendimento)) {
+				return atendimento = null;
+			}else {
+				System.out.println("cadastrou ok");
+			}
+			
+		}else {
+			atendimento = null;
 		}
-		
-		atendimentoRetrofit.cadastrar(atendimento);
-		
-		return atendimento;
 
-//		Call<Atendimento> call = new RetrofitConfig().getAtendimentoAPIService().cadastrarAtendimento(atendimento);
-//		call.enqueue(new Callback<Atendimento>() {
-//			@Override
-//			public void onResponse(Call<Atendimento> call, Response<Atendimento> response) {
-//
-//			}
-//
-//			@Override
-//			public void onFailure(Call<Atendimento> call, Throwable t) {
-//				System.out.println("Erro ao fazer requisicao! Erro:" + t.getMessage());
-//			}
-//		});
+		return atendimento;
 
 	}
 
-	public String deletar(String id) {
-//		String deletar = "";
-//		
-//		Call<ResponseBody> call = new RetrofitConfig().getAtendimentoAPIService().deleteAtendimento(Long.parseLong(id));
-//		try {
-//			Response<ResponseBody> response = call.execute();
-//			deletar = response.body().string();		
-//			System.out.println("api retornou: "+deletar);
-//		} catch (Exception ex) {
-//			ex.printStackTrace();
-//		}
-//		
-//		if (!"ok".equalsIgnoreCase(deletar)){
-//			System.out.println("Deu ruim, nao deletou");
-//			return false;
-//		}
-//		
-//		return true;	
-		
-		String retorno = "";
-		boolean retornoResponse = atendimentoRetrofit.deletar(id);
-		
-		if(retornoResponse) {
-			retorno = "deletou";
-		}else {
-			retorno = "nao deletou";
+	public Boolean deletar(String id) {
+		boolean retornoResponse = atendimentoConexao.deletar(id);
+
+		return retornoResponse;
+	}
+
+	private boolean validaCadastroDeAtendimento(Atendimento atendimento) {
+		if (("").equalsIgnoreCase(atendimento.getAnimal_nome()) || atendimento.getAnimal_nome().isEmpty()) {
+			return false;
+		}
+
+		if (("").equalsIgnoreCase(atendimento.getAnimal_raca()) || atendimento.getAnimal_raca().isEmpty()) {
+			return false;
+		}
+
+		if (("").equalsIgnoreCase(atendimento.getPessoa_nome()) || atendimento.getPessoa_nome().isEmpty()) {
+			return false;
 		}
 		
-		return retorno;
-	}	
-	
+		if (("").equalsIgnoreCase(atendimento.getTipoAtendimento()) || atendimento.getTipoAtendimento().isEmpty()) {
+			return false;
+		}
+		if (String.valueOf(atendimento.getId()).contentEquals("") || String.valueOf(atendimento.getId()).isEmpty()) {
+			return false;
+		}
+
+		return true;
+	}
 
 	private String defineDataParaEntrega() {
 
 		LocalDateTime agora = LocalDateTime.now();
 		agora = agora.plusHours(5);
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 		String agoraFormatado = agora.format(formatter);
 
 		return agoraFormatado;

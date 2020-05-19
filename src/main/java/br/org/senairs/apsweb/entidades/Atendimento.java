@@ -23,7 +23,6 @@ public class Atendimento implements Serializable{
 	private String pessoa_nome;
 	private String tipoAtendimento;
 	private String dataEntrega;
-	private String entregaStatus;
 	
 	public long getId() {
 		return id;
@@ -61,11 +60,4 @@ public class Atendimento implements Serializable{
 	public void setDataEntrega(String dataEntrega) {
 		this.dataEntrega = dataEntrega;
 	}
-	public String getEntregaStatus() {
-		return entregaStatus;
-	}
-	public void setEntregaStatus(String entregaStatus) {
-		this.entregaStatus = entregaStatus;
-	}
-	
 }

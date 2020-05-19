@@ -6,7 +6,6 @@ import java.util.List;
 import br.org.senairs.apsweb.entidades.Atendimento;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AtendimentoRetrofit {
@@ -31,31 +30,30 @@ public class AtendimentoRetrofit {
 			for (Atendimento atendimento : response.body()) {
 				listaAtendimentos.add(atendimento);
 			}
-			System.out.println("retrofit lista: " + listaAtendimentos.size());
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		
-		System.out.println("fora retrofit lista: " + listaAtendimentos.size());
-
 		return listaAtendimentos;
-
 	}
 	
-	public void cadastrar(Atendimento atendimento) {
-
+	public boolean cadastrar(Atendimento atendimento) {
+		
 		Call<Atendimento> call = new RetrofitConfig().getAtendimentoAPIService().cadastrarAtendimento(atendimento);
-		call.enqueue(new Callback<Atendimento>() {
-			@Override
-			public void onResponse(Call<Atendimento> call, Response<Atendimento> response) {
+		try {
+			Response<Atendimento> response = call.execute();
+			
+			String IdAtendimentoResponse = String.valueOf(response.body().getId());
+			boolean validaId = IdAtendimentoResponse.isEmpty() || "".equalsIgnoreCase(IdAtendimentoResponse);
+			if(!(response.isSuccessful() && !validaId)) {
+				return false;
 			}
-
-			@Override
-			public void onFailure(Call<Atendimento> call, Throwable t) {
-				System.out.println("Erro ao fazer requisicao! Erro:" + t.getMessage());
-			}
-		});
-
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public boolean deletar(String id) {

@@ -3,13 +3,15 @@
 <head xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Cadastro ok!</title>
 </head>
 <body>
-Cadastrou<br><br>
-Data de entrega: <span th:text="${data_entraga}"> </span>
-<br><br>
-<input type="button" class="btn btn-dark" value="Pagina Inicial"
+	<span th:text="${cadastro_status}"> </span>
+	<br>
+	<br>
+	<span th:text="${data_entrega}"> </span>
+	<br><br>
+	<input type="button" class="btn btn-dark" value="Pagina Inicial"
 		onclick="location.href='/';">
 </body>
 </html>
