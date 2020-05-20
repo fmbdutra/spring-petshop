@@ -65,7 +65,7 @@ public class AtendimentoController {
 
 		return model;
 	}
-	
+
 	@GetMapping(value = "/testeAdiciona")
 	public String adicionarAtendimento() {
 		Atendimento a = new Atendimento();
@@ -74,14 +74,14 @@ public class AtendimentoController {
 		a.setPessoa_nome("senhor teste");
 		a.setTipoAtendimento("banho");
 		atendimentoService.cadastrar(a);
-		
+
 		Atendimento b = new Atendimento();
 		b.setAnimal_nome("teste");
 		b.setAnimal_raca("gato");
 		b.setPessoa_nome("senhor teste");
 		b.setTipoAtendimento("tosa");
 		atendimentoService.cadastrar(b);
-		
+
 		Atendimento c = new Atendimento();
 		c.setAnimal_nome("teste");
 		c.setAnimal_raca("cachorro");
